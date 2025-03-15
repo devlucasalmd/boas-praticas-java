@@ -62,8 +62,8 @@ public class AbrigoService {
 	        System.out.println("Abrigos cadastrados:");
 	        for (Abrigo abrigo : abrigoList) {
 
-	            long id = abrigo.getId();
-	            String nome = abrigo.getNome();
+	            long id = abrigo.getId(); 
+	            String nome = abrigo.getNome(); 
 	            System.out.println(id +" - " +nome);
 	        }    	
 	    }
