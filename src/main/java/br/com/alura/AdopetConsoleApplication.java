@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import br.com.alura.client.ClientHttpConfiguration;
 import br.com.alura.service.AbrigoService;
 import br.com.alura.service.PetService;
 
@@ -21,8 +22,9 @@ public class AdopetConsoleApplication {
 
     public static void main(String[] args) {
     	
-    	AbrigoService abrigoService = new AbrigoService();
-    	PetService petService = new PetService();
+    	ClientHttpConfiguration client = new ClientHttpConfiguration();
+    	AbrigoService abrigoService = new AbrigoService(client);
+    	PetService petService = new PetService(client);
     	
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
