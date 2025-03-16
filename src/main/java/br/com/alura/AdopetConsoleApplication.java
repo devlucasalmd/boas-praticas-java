@@ -22,62 +22,37 @@ public class AdopetConsoleApplication {
 
     public static void main(String[] args) {
     	
-    	ClientHttpConfiguration client = new ClientHttpConfiguration();
-    	AbrigoService abrigoService = new AbrigoService(client);
-    	PetService petService = new PetService(client);
+    	CommandExecutor executor = new CommandExecutor();
     	
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
             int opcaoEscolhida = 0;
             while (opcaoEscolhida != 5) {
-                System.out.println("\nDIGITE O NÚMERO DA OPERAÇÃO DESEJADA:");
-                System.out.println("1 -> Listar abrigos cadastrados");
-                System.out.println("2 -> Cadastrar novo abrigo");
-                System.out.println("3 -> Listar pets do abrigo");
-                System.out.println("4 -> Importar pets do abrigo");
-                System.out.println("5 -> Sair");
-
-                String textoDigitado = new Scanner(System.in).nextLine();
+            	exibirMenu();
+            	String textoDigitado = new Scanner(System.in).nextLine();
                 opcaoEscolhida = Integer.parseInt(textoDigitado);
 
-                if (opcaoEscolhida == 1) {
-                	abrigoService.listarAbrigo();                  
-                } else if (opcaoEscolhida == 2) {
-                	abrigoService.cadastrarAbrigo();
-                } else if (opcaoEscolhida == 3) {
-                	petService.listarPetsDoAbrigo();
-                } else if (opcaoEscolhida == 4) {
-                	petService.importarPetsDoAbrigo();
-                } else if (opcaoEscolhida == 5) {
-                    break;
-                } else {
-                    System.out.println("NÚMERO INVÁLIDO!");
-                    opcaoEscolhida = 0;
-                }
-            }
-            System.out.println("Finalizando o programa...");
-        } catch (Exception e) {
+                switch (opcaoEscolhida) {
+				case 1 -> executor.executeCommand(new ListarAbrigoCommand());
+				case 2 -> executor.executeCommand(new CadastrarAbrigoCommand());
+				case 3 -> executor.executeCommand(new ListarPetsDoAbrigoCommand());
+				case 4 -> executor.executeCommand(new ImportarPetsDoAbrigoCommand());
+				case 5 -> System.exit(0);
+				default -> System.out.println("NÚMERO INVÁLIDO!");
+				}
+              } 
+        	}
+        	catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    private static HttpResponse<String> dispararRequisicaoGet(HttpClient client, String uri) throws IOException, InterruptedException {
+    private static void exibirMenu() {
         
-    	HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-    	
-    	return client.send(request, HttpResponse.BodyHandlers.ofString());    	
-	}
-    
-    private static HttpResponse<String> dispararRequisicaoPost(HttpClient client, String uri, JsonObject json) throws IOException, InterruptedException {
-    	 HttpRequest request = HttpRequest.newBuilder()
-                 .uri(URI.create(uri))
-                 .header("Content-Type", "application/json")
-                 .method("POST", HttpRequest.BodyPublishers.ofString(json.toString()))
-                 .build();
-
-         return client.send(request, HttpResponse.BodyHandlers.ofString());
+    	System.out.println("\nDIGITE O NÚMERO DA OPERAÇÃO DESEJADA:");
+        System.out.println("1 -> Listar abrigos cadastrados");
+        System.out.println("2 -> Cadastrar novo abrigo");
+        System.out.println("3 -> Listar pets do abrigo");
+        System.out.println("4 -> Importar pets do abrigo");
+        System.out.println("5 -> Sair");
     }
 }
